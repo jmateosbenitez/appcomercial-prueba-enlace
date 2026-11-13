@@ -39,7 +39,7 @@ export function diagnostico(hash) {
 }
 
 export function textoDiagnostico(d) {
-  return `Diagnóstico: recibidos ${d.longitud} caracteres tras «#» (se esperan 450) · ${d.motivo}`;
+  return `Diagnóstico: recibidos ${d.longitud} caracteres tras «#» · ${d.motivo}`;
 }
 
 /**
@@ -135,6 +135,13 @@ export function iniciar(win = window) {
   doc.getElementById("abrir").setAttribute("href", enlaceIntent(token));
   doc.getElementById("abrir-directo").setAttribute("href", enlaceDirecto(token));
   mostrar("con-autorizacion", true);
+  // Intenta abrir la app sola (Android). Si el navegador lo impide, queda el botón.
+  if (abreSola(win.navigator.userAgent)) win.setTimeout(() => win.location.assign(enlaceIntent(token)), 300);
+}
+
+/** Solo en Android: en otros sistemas el enlace `intent://` no existe. */
+export function abreSola(ua) {
+  return /Android/i.test(String(ua || ""));
 }
 
 if (typeof window !== "undefined" && window.document?.getElementById("abrir")) iniciar();
