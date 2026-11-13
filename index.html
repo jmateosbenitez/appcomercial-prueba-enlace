@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+  <title>Prueba de activación · App Comercial</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; padding: 24px 16px; background: #f6f7f9; color: #1f2937; }
+    main { max-width: 440px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 24px; }
+    h1 { font-size: 1.25rem; margin: 0 0 12px; }
+    .boton { display: block; text-align: center; background: #1f2937; color: #fff; text-decoration: none;
+             padding: 16px; border-radius: 10px; font-size: 1.1rem; font-weight: 700; margin: 16px 0; }
+    .nota { font-size: .9rem; color: #4b5563; }
+    .aviso { background: #fff7ed; border-radius: 8px; padding: 12px; }
+  </style>
+</head>
+<body>
+<main>
+  <p class="aviso"><strong>Página de PRUEBA</strong> de Marketvin. Solo para la comprobación interna con
+    «AppComercialTestEnlace». No activa nada por sí sola.</p>
+  <h1>Activar App Comercial</h1>
+
+  <div id="con-autorizacion" hidden>
+    <p>Pulsa el botón: se abrirá la app y te enseñará los datos antes de activar.</p>
+    <a id="abrir" class="boton" href="#">Abrir App Comercial</a>
+    <p class="nota">¿No se abre? Pulsa los tres puntos de arriba, elige «Abrir en Chrome» y vuelve a pulsar
+      el botón. También puedes probar <a id="abrir-directo" href="#">este otro enlace</a>.</p>
+  </div>
+  <p id="sin-autorizacion" hidden>Este enlace no trae ninguna autorización. Pide uno nuevo.</p>
+  <p id="caducada" hidden>Esta página de prueba ya ha terminado.</p>
+
+  <p class="nota">Abierta con: <strong id="navegador">—</strong></p>
+</main>
+<script type="module" src="pagina.js"></script>
+</body>
+</html>
