@@ -12,6 +12,7 @@
     body { font-family: system-ui, sans-serif; margin: 0; padding: 24px 16px; background: #f6f7f9; color: #1f2937; }
     main { max-width: 440px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 24px; }
     h1 { font-size: 1.25rem; margin: 0 0 12px; }
+    h2 { font-size: 1.05rem; margin: 24px 0 8px; }
     .boton { display: block; text-align: center; background: #1f2937; color: #fff; text-decoration: none;
              padding: 16px; border-radius: 10px; font-size: 1.1rem; font-weight: 700; margin: 16px 0; }
     .nota { font-size: .9rem; color: #4b5563; }
@@ -32,6 +33,15 @@
   </div>
   <p id="sin-autorizacion" hidden>Este enlace no trae ninguna autorización. Pide uno nuevo.</p>
   <p id="caducada" hidden>Esta página de prueba ya ha terminado.</p>
+  <p id="prueba-recibida" hidden><strong>Enlace de prueba recibido.</strong> Es ficticio y no activa nada:
+    solo sirve para ver si WhatsApp lo entrega completo. Mira el diagnóstico de abajo.</p>
+
+  <section id="prueba-envio" hidden>
+    <h2>Prueba de envío por WhatsApp</h2>
+    <p class="nota">Abre WhatsApp con un enlace de prueba ya escrito (ficticio, no activa nada).
+      Envíatelo a ti mismo y púlsalo.</p>
+    <a id="probar-envio" class="boton" href="#" rel="noopener noreferrer">Probar envío por WhatsApp</a>
+  </section>
 
   <p class="nota">Abierta con: <strong id="navegador">—</strong></p>
   <p class="nota" id="diagnostico"></p>

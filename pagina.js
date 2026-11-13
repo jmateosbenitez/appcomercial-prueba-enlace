@@ -42,6 +42,45 @@ export function textoDiagnostico(d) {
   return `Diagnóstico: recibidos ${d.longitud} caracteres tras «#» (se esperan 450) · ${d.motivo}`;
 }
 
+/**
+ * PRUEBA TEMPORAL DE ENVÍO POR WHATSAPP (LIC-2a): autorización FICTICIA con el formato y la
+ * longitud reales (450 caracteres) y sin firma válida: no activa nada ni lleva datos. Sirve para
+ * comprobar que WhatsApp entrega el enlace completo. Se retira con el diagnóstico.
+ */
+export const PRUEBA_ENVIO = "envio-whatsapp";
+
+function b64url(bytes) {
+  let s = "";
+  bytes.forEach((b) => (s += String.fromCharCode(b)));
+  return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+const azar = (n) => crypto.getRandomValues(new Uint8Array(n));
+
+export function autorizacionFicticia(rnd = azar) {
+  const cab = `{"prueba":"${PRUEBA_ENVIO}","r":"`;
+  const fin = '"}';
+  // 268 bytes de carga → 358 caracteres; firma aleatoria de 64 bytes → 86 caracteres.
+  const relleno = Array.from(rnd(268 - cab.length - fin.length), (b) => "0123456789abcdef"[b % 16]).join("");
+  return `MKV1.${b64url(new TextEncoder().encode(cab + relleno + fin))}.${b64url(rnd(64))}`;
+}
+
+export function esPruebaEnvio(token) {
+  try {
+    const p = token.split(".")[1];
+    const b64 = p.replace(/-/g, "+").replace(/_/g, "/") + "==".slice(0, (4 - (p.length % 4)) % 4);
+    return JSON.parse(atob(b64)).prueba === PRUEBA_ENVIO;
+  } catch {
+    return false;
+  }
+}
+
+/** Abre WhatsApp con el mensaje ya escrito (el usuario elige el chat y envía). */
+export function enlaceWhatsApp(pagina, token) {
+  const texto = `Prueba de envío de App Comercial (ficticia, no activa nada):\n${pagina}#${token}`;
+  return "https://wa.me/?text=" + encodeURIComponent(texto);
+}
+
 /** Enlace de Android que abre la app de la prueba con la autorización (sin red). */
 export function enlaceIntent(token) {
   return `intent://activar?t=${encodeURIComponent(token)}#Intent;scheme=${ESQUEMA};package=${PAQUETE};end`;
@@ -78,6 +117,15 @@ export function iniciar(win = window) {
   if (nodo) nodo.textContent = textoDiagnostico(diag);
   if (Date.now() > CADUCA) {
     mostrar("caducada", true);
+    return;
+  }
+  const envio = doc.getElementById("probar-envio");
+  if (envio) {
+    envio.setAttribute("href", enlaceWhatsApp(win.location.origin + win.location.pathname, autorizacionFicticia()));
+    mostrar("prueba-envio", true);
+  }
+  if (token && esPruebaEnvio(token)) {
+    mostrar("prueba-recibida", true);
     return;
   }
   if (!token) {
